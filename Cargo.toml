@@ -1,0 +1,12 @@
+[package]
+name = "hello-rocket"
+version = "0.1.0"
+authors = ["João Neto <joaopintoneto@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+tokio = { version = "1.0.1", features = ["fs", "io-util"] }
+rocket = { git = "https://github.com/SergioBenitez/Rocket.git", branch = "master" }
+rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket.git", branch = "master", default-features = false, features = ["json"] }
+mongodb = { version = "1.1.1", default-features = false, features = ["async-std-runtime"] }
+serde = "1.0.118"
