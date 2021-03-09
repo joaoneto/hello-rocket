@@ -24,6 +24,7 @@ async fn main() -> Result<(), rocket::error::Error> {
         .mount("/", routes![
             index,
             resources::users::all,
+            resources::login::create,
         ])
         .launch()
         .await?;

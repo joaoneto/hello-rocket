@@ -10,3 +10,4 @@ rocket = { git = "https://github.com/SergioBenitez/Rocket.git", branch = "master
 rocket_contrib = { git = "https://github.com/SergioBenitez/Rocket.git", branch = "master", default-features = false, features = ["json"] }
 mongodb = { version = "1.1.1", default-features = false, features = ["async-std-runtime"] }
 serde = "1.0.118"
+jsonwebtoken = "7"
