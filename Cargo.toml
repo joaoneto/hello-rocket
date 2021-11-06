@@ -8,7 +8,7 @@ edition = "2018"
 tokio = { version = "1.0.1", features = ["fs", "io-util"] }
 rocket = { version = "0.5.0-rc.1", features = ["json"] }
 rocket_dyn_templates = { version = "0.1.0-rc.1", features = ["tera"] }
-mongodb = { version = "1.1.1", default-features = false, features = ["async-std-runtime"] }
+mongodb = { version = "2.0.1", default-features = false, features = ["async-std-runtime"] }
 serde = "1.0.118"
 jsonwebtoken = "7"
 dotenv = "0.15.0"
