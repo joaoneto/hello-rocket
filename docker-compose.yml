@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+    mongodb:
+        image: mongo:5.0.2
+        restart: unless-stopped
+        command: --bind_ip_all
+        ports:
+            - 27017:27017
+        volumes:
+            - mongodb_data:/data/db
+    app:
+        depends_on:
+            - mongodb
+        build: .
+        restart: unless-stopped
+        env_file: ./.env
+        ports:
+            - $PORT:$PORT
+        stdin_open: true
+        tty: true
+volumes:
+    mongodb_data:
