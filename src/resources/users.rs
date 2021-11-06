@@ -3,15 +3,15 @@ use mongodb::{
     bson::{doc},
 };
 use rocket::State;
-use rocket_contrib::json::Json;
+use rocket::serde::json::Json;
 use rocket::http::Status;
+use rocket::futures::stream::{StreamExt};
 
-use crate::rocket::tokio::stream::StreamExt;
 use crate::models::user::{User};
 use crate::lib::{Storage};
 
 #[get("/users")]
-pub async fn all(state: State<'_, Storage>) -> Result<Json<Vec<User>>, Status> {
+pub async fn all(state: &State<Storage>) -> Result<Json<Vec<User>>, Status> {
     let collection = state.mongo
         .database("hello_rocket")
         .collection("users");

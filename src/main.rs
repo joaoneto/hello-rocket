@@ -4,30 +4,40 @@ mod lib;
 mod models;
 mod resources;
 
+use std::env;
 use lib::{db, Storage};
-// use rocket::State;
-// use mongodb::Client;
-
-
 
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
 }
 
-#[rocket::main]
-async fn main() -> Result<(), rocket::error::Error> {
+fn load_env() {
+    let mode = env::var("MODE")
+        .unwrap_or("development".to_string());
+    if mode != "production" {
+        dotenv::dotenv().ok();
+    }
+}
+
+#[launch]
+async fn rocket() -> _ {
+    load_env();
+    let port: u16 = env::var("PORT")
+        .unwrap_or("8000".to_string())
+        .parse::<u16>()
+        .unwrap();
     let mongo = db::get_connection().await;
     let storage = Storage { mongo: mongo.clone() };
-    rocket::ignite()
+    let figment = rocket::Config::figment()
+        .merge(("port", port))
+        .merge(("address", "0.0.0.0"));
+
+    rocket::custom(figment)
         .manage(storage)
         .mount("/", routes![
             index,
             resources::users::all,
             resources::login::create,
         ])
-        .launch()
-        .await?;
-
-    Ok(())
 }
