@@ -5,10 +5,12 @@ authors = ["João Neto <joaopintoneto@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-tokio = { version = "1.0.1", features = ["fs", "io-util"] }
+tokio = { version = "1.3.0", features = ["fs", "io-util"] }
 rocket = { version = "0.5.0-rc.1", features = ["json"] }
 rocket_dyn_templates = { version = "0.1.0-rc.1", features = ["tera"] }
 mongodb = { version = "2.0.1", default-features = false, features = ["async-std-runtime"] }
-serde = "1.0.118"
-jsonwebtoken = "7"
+serde = { version = "1.0.130", features = ["derive"] }
+jsonwebtoken = "7.2.0"
 dotenv = "0.15.0"
+chrono = { version = "0.4.19", features = ["serde"] }
+bson = "2.0.1"
