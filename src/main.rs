@@ -3,6 +3,7 @@
 mod lib;
 mod models;
 mod resources;
+mod guards;
 
 use std::env;
 use lib::{db, Storage};
@@ -37,7 +38,7 @@ async fn rocket() -> _ {
         .manage(storage)
         .mount("/", routes![
             index,
-            resources::users::all,
+            resources::users::list,
             resources::login::create,
         ])
 }

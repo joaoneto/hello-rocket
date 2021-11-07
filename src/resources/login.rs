@@ -3,19 +3,18 @@ use rocket::serde::json::Json;
 use rocket::http::Status;
 
 use crate::lib::security::{issue_token};
-use crate::models::user::{User};
+use crate::models::user::{UserLogin};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct LoginToken {
     token: String,
 }
 
-#[post("/login", format = "application/json", data="<user>")]
-pub fn create(user: Json<User>) -> Result<Json<LoginToken>, Status> {
-    let user_id = user.name.as_ref().unwrap().to_string();
-    let email = user.email.as_ref().unwrap();
+#[post("/login", format = "json", data="<user>")]
+pub fn create(user: Json<UserLogin>) -> Result<Json<LoginToken>, Status> {
+    let email = user.email.to_string();
 
-    let token = match issue_token(&user_id, &email) {
+    let token = match issue_token(&email) {
         Ok(t) => t,
         Err(_) => return Err(Status::InternalServerError),
     };
