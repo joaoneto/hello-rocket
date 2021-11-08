@@ -46,18 +46,28 @@ pub async fn list(state: &State<Storage>, _auth: Auth) -> Result<Json<Vec<UsersL
 
 #[post("/users/register", format = "json", data = "<user>")]
 pub async fn register(user: Json<UserRegisterForm>, state: &State<Storage>) -> Result<Json<UserRegister>, Status> {
+    let collection = get_users_collection(&state.mongo);
     let hashed_password = hash_password(&user.password);
     let mut doc = user.to_document();
     doc.insert("password", bson::Bson::String(hashed_password.to_owned()));
 
-    let insert_result = get_users_collection(&state.mongo)
+    let user_doc = collection
+        .find_one(bson::doc! { "email": &user.email }, None)
+        .await
+        .unwrap();
+
+    if user_doc.is_some() {
+        return Err(Status::Forbidden);
+    }
+
+    let insert_result = collection
         .insert_one(doc, None)
         .await
-        .expect("Error creating user");
+        .unwrap();
 
     let result = UserRegister {
         id: insert_result.inserted_id.as_object_id()
-            .expect("Error getting inserted_id")
+            .unwrap()
             .to_hex(),
         name: user.name.to_owned(),
         email: user.email.to_owned(),
