@@ -964,11 +964,13 @@ dependencies = [
  "bson",
  "chrono",
  "dotenv",
+ "hmac",
  "jsonwebtoken",
  "mongodb",
  "rocket",
  "rocket_dyn_templates",
  "serde",
+ "sha2",
  "tokio",
 ]
 

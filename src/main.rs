@@ -39,6 +39,7 @@ async fn rocket() -> _ {
         .mount("/", routes![
             index,
             resources::users::list,
+            resources::users::register,
             resources::login::create,
         ])
 }

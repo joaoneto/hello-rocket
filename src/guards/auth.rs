@@ -23,11 +23,14 @@ fn extract_auth_from_request(request: &Request) -> Option<Auth> {
         .get_one("authorization")
         .and_then(extract_token_from_header)
         .and_then(|token| -> Option<Auth> {
-            verify_token(token)
-                .map_err(|err| {
-                    eprintln!("Auth decode error: {:?}", err);
-                })
-                .ok()
+            match verify_token(token) {
+                Ok(auth) => return Some(auth),
+                Err(err) => {
+                    // don't panic here, just logs the error and return None
+                    println!("{:#?}", err);
+                    return None
+                },
+            };
         })
 }
 
