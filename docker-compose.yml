@@ -16,7 +16,7 @@ services:
         restart: unless-stopped
         env_file: ./.env
         ports:
-            - $PORT:$PORT
+            - $APP_PORT:$APP_PORT
         stdin_open: true
         tty: true
 volumes:

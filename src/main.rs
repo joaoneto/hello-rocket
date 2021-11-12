@@ -1,11 +1,14 @@
-#[macro_use] extern crate rocket;
+#[macro_use]
+extern crate rocket;
+#[macro_use]
+extern crate lazy_static;
 
 mod lib;
 mod models;
 mod resources;
 mod guards;
+mod config;
 
-use std::env;
 use lib::{db, Storage};
 
 #[get("/")]
@@ -13,25 +16,14 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-fn load_env() {
-    let mode = env::var("MODE")
-        .unwrap_or("development".to_string());
-    if mode != "production" {
-        dotenv::dotenv().ok();
-    }
-}
-
 #[launch]
 async fn rocket() -> _ {
-    load_env();
-    let port: u16 = env::var("PORT")
-        .unwrap_or("8000".to_string())
-        .parse::<u16>()
-        .unwrap();
+    config::load_env();
+
     let mongo = db::get_connection().await;
     let storage = Storage { mongo: mongo.clone() };
     let figment = rocket::Config::figment()
-        .merge(("port", port))
+        .merge(("port", *config::APP_PORT))
         .merge(("address", "0.0.0.0"));
 
     rocket::custom(figment)

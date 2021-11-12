@@ -16,3 +16,4 @@ chrono = { version = "0.4.19", features = ["serde"] }
 bson = "2.0.1"
 hmac = "0.11.0"
 sha2 = "0.9.8"
+lazy_static = "1.4.0"
