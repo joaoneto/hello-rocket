@@ -3,7 +3,7 @@ use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation,
 use serde::{Deserialize, Serialize};
 use chrono::{Duration, Utc};
 use sha2::Sha256;
-use hmac::{Hmac, Mac, NewMac};
+use hmac::{Hmac, Mac};
 
 use crate::config;
 
